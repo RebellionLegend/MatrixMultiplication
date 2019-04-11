@@ -49,15 +49,18 @@ namespace MatrixMultiplication
             }
         }
 
-        public void InputEle(int a, int b)
+        public int[,] InputEle(int a, int b)
         {
+            int[,] matrix = new int[a, b];
             for (int i = 0; i<a; i++)
             {
                 for (int j = 0; j<b; j++)
                 {
                     Console.WriteLine("Input the " + i.ToString() + j.ToString() + " element of the matrix");
+                    matrix[i, j] = int.Parse(Console.ReadLine());
                 }
             }
+            return matrix;
         }
     }
 }
