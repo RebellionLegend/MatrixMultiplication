@@ -13,9 +13,11 @@ namespace MatrixMultiplication
             int[,] matrix2 = GetMatrix(dimArr[1], dimArr[2], 2);
             int[,] resultMatrix = Multiply(matrix1, matrix2, dimArr);
             WriteMatrix(resultMatrix);
-            Thread.Sleep(10000000);
+            string[,] steps = GetSteps(matrix1, matrix2, dimArr);
+            WriteSteps(steps);
+            Thread.Sleep(10000000);   
         }
-     
+
         public static int[] GetDim()
         {
             int[] dimArr = new int[3];
@@ -45,6 +47,7 @@ namespace MatrixMultiplication
         public static int[,] Multiply(int[,] matrix1, int[,] matrix2, int[] dimArr)
         {
             int[,] resultMatrix = new int[dimArr[0], dimArr[2]];
+
             for (int i = 0; i < dimArr[0]; i++)
             {
                 for (int j = 0; j < dimArr[2]; j++)
@@ -52,7 +55,7 @@ namespace MatrixMultiplication
                     resultMatrix[i, j] = 0;
                     for (int k = 0; k < dimArr[1]; k++)
                     {
-                        resultMatrix[i, j] += matrix1[i, k] * matrix2[k, j];
+                        resultMatrix[i, j] += matrix1[i, k] * matrix2[k, j];                        
                     }
                 }
             }
@@ -66,6 +69,41 @@ namespace MatrixMultiplication
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     Console.Write(matrix[i, j].ToString()+ "  ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public static string[,] GetSteps(int[,] matrix1, int[,] matrix2, int[] dimArr)
+        {
+            string[,] steps = new string[dimArr[0], dimArr[2]];
+
+            for (int i = 0; i < dimArr[0]; i++)
+            {
+                for (int j = 0; j < dimArr[2]; j++)
+                {
+                    steps[i, j] = "";
+                    for (int k = 0; k < dimArr[1]; k++)
+                    {
+                        if (k != 0)
+                        {
+                            steps[i, j] += "+";
+                        }
+                        steps[i, j] += matrix1[i, k].ToString() + "×" + matrix2[k, j];
+
+                    }
+                }
+            }
+            return steps;
+        }
+
+        public static void WriteSteps(string[,] steps)
+        {
+            for (int i = 0; i < steps.GetLength(0); i++)
+            {
+                for (int j = 0; j < steps.GetLength(1); j++)
+                {
+                    Console.Write(steps[i, j] + " ");
                 }
                 Console.WriteLine();
             }
