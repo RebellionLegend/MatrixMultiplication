@@ -1,66 +1,74 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace MatrixMultiplication
 {
     class Program
     {
-        int[,] matrix1;
-        int[,] matrix2;
-        int[,] resultMatrix;
-
-        int m;
-        int n;
-        int p;
-        int[,] dimArr = new int[2, 2];
         
         static void Main(string[] args)
         {
-            
+            int[] dimArr = GetDim();
+            int[,] matrix1 = GetMatrix(dimArr[0], dimArr[1], 1);
+            int[,] matrix2 = GetMatrix(dimArr[1], dimArr[2], 2);
+            int[,] resultMatrix = Multiply(matrix1, matrix2, dimArr);
+            WriteMatrix(resultMatrix);
+            Thread.Sleep(10000000);
         }
-        
-        public void AssignDimArr()
+     
+        public static int[] GetDim()
         {
-            dimArr = new int[,] { { m, n }, { n, p } };
+            int[] dimArr = new int[3];
+            Console.WriteLine("Input the number of rows of the first matrix");
+            dimArr[0] = int.Parse(Console.ReadLine());
+            Console.WriteLine("Input the number of columns of the first matrix or rows of second matrix");
+            dimArr[1] = int.Parse(Console.ReadLine());
+            Console.WriteLine("Input the number of columns of the second matrix");
+            dimArr[2] = int.Parse(Console.ReadLine());
+            return dimArr;
         }
 
-        public int [,] GiveMatrix(int a, int b)
-        {
-            int[,] matrix = new int [a, b];
-            return matrix;
-        }
-
-        public void InputDim()
-        {
-            string dim;
-            string matrixNum;
-            for (int i=0; i<2; i++)
-            {
-                matrixNum = (i == 0) ? "1" : "2";
-                for (int j=0; i<2; i++)
-                {
-                    dim = (j == 0) ? "rows" : "column";
-                    Console.WriteLine("Input the number of " + dim + " of matrix " + matrixNum);
-                    dimArr[i,j] = int.Parse(Console.ReadLine());
-                }
-            }
-        }
-
-        public int[,] InputEle(int a, int b)
+        public static int[,] GetMatrix(int a, int b, int num)
         {
             int[,] matrix = new int[a, b];
-            for (int i = 0; i<a; i++)
+            for (int i = 0; i < a; i++)
             {
-                for (int j = 0; j<b; j++)
+                for (int j = 0; j < b; j++)
                 {
-                    Console.WriteLine("Input the " + i.ToString() + j.ToString() + " element of the matrix");
+                    Console.WriteLine("Input the " + (i+1).ToString() + (j+1).ToString() + " element of matrix" + num.ToString());
                     matrix[i, j] = int.Parse(Console.ReadLine());
                 }
             }
             return matrix;
+        }
+
+        public static int[,] Multiply(int[,] matrix1, int[,] matrix2, int[] dimArr)
+        {
+            int[,] resultMatrix = new int[dimArr[0], dimArr[2]];
+            for (int i = 0; i < dimArr[0]; i++)
+            {
+                for (int j = 0; j < dimArr[2]; j++)
+                {
+                    resultMatrix[i, j] = 0;
+                    for (int k = 0; k < dimArr[1]; k++)
+                    {
+                        resultMatrix[i, j] += matrix1[i, k] * matrix2[k, j];
+                    }
+                }
+            }
+            return resultMatrix;
+        }
+
+        public static void WriteMatrix(int[,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write(matrix[i, j].ToString()+ "  ");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
